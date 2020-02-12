@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import getSavedTracks from '../../Utils/getSavedTracks';
+import getUserInfo from '../../Utils/getUserInfo';
 import Mood from '../../Components/Mood';
 
 class Home extends Component {
@@ -7,13 +8,16 @@ class Home extends Component {
         super(props);
         this.state = {
             trackInfo: [],
-            isReady: false,
-            csList: "",
-            dataPoints: []
+            userId: ""
         };
     }
     componentDidMount() {
         let arr = [];
+        getUserInfo(this.props.token)
+            .then(({ data }) => {
+                this.setState({ userId: data.id });
+                console.log(this.state.userId);
+            })
         getSavedTracks(this.props.token).then(response => {
             Object.keys(response.data.items).forEach(function (key) {
                 arr.push(response.data.items[key].track);
@@ -21,6 +25,8 @@ class Home extends Component {
             this.setState({ trackInfo: arr, isReady: true });
             this.setState({ csList: arr.join(", ") });
         });
+
+
 }
 
     render() {
@@ -31,8 +37,8 @@ class Home extends Component {
         return (
             
             <div>
-                <p>Working</p>
-                <Mood token={this.props.token} tracks={this.state.trackInfo} />
+                <p>User info and user saved tracks collected</p>
+                <Mood token={this.props.token} tracks={this.state.trackInfo} user={this.state.userId} />
             </div>
         );
     }

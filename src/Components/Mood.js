@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import getTrackAttributes from '../Utils/getTrackAttributes';
+import CreatePlaylist from './CreatePlaylist';
+
 
 class Mood extends Component {
     constructor(props) {
         super(props);
         this.state = {
             trackInfo: [],
-            mood: 'sad',
+            mood: 'excited',
             moodArray: [],
-            moodArrayReady: false
+            moodArrayReady: false,
+            userId: ""
         };
 
         this.findMood.bind(this);
@@ -17,6 +20,7 @@ class Mood extends Component {
     componentDidMount() {
         let trackData = {};
         let mood = "";
+        
         this.props.tracks.map(track => getTrackAttributes(this.props.token, track)
             .then(({ data }) => {
                 trackData = { ...data, ...track, mood };
@@ -24,7 +28,6 @@ class Mood extends Component {
                 if (this.state.trackInfo[49] !== undefined) {
                     console.log(this.state.trackInfo);
                 }       
-                ;
             })
         );
     }
@@ -37,6 +40,7 @@ class Mood extends Component {
         let counter = 0;
         let trackData = this.state.moodArray.slice();
         let moodCounter = 0;
+        
         this.state.trackInfo.map(track => {
 
             if (track.danceability >= .5) {
@@ -160,7 +164,7 @@ class Mood extends Component {
             console.log('mood = ' + track.mood);
             if (track.mood === this.state.mood) {
                 console.log("Into mood array");
-                trackData[moodCounter] = this.state.trackInfo[counter];
+                trackData[moodCounter] = this.state.trackInfo[counter].uri;
                 this.setState({ moodArray: trackData })
                 moodCounter = moodCounter + 1;
             }
@@ -194,7 +198,8 @@ class Mood extends Component {
             return (
 
                 <div>
-                    <p> this where the other component will be called after pressing the button </p>
+                    <p>Song moods found</p>
+                    <CreatePlaylist token={this.props.token} mood={this.state.mood} songList={this.state.moodArray} user={this.props.user} /> 
                 </div>
             );
         }
