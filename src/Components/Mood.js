@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import getTrackAttributes from '../Utils/getTrackAttributes';
 import CreatePlaylist from './CreatePlaylist';
+import { Combobox } from 'react-widgets';
+import 'react-widgets/dist/css/react-widgets.css';
 
 
 class Mood extends Component {
@@ -8,12 +10,12 @@ class Mood extends Component {
         super(props);
         this.state = {
             trackInfo: [],
-            mood: 'excited',
+            mood: '',
             moodArray: [],
             moodArrayReady: false,
             userId: ""
         };
-
+        
         this.findMood.bind(this);
     }
 
@@ -181,22 +183,28 @@ class Mood extends Component {
     }
     
     render() {
-        
+        let moods = ['happy', 'sad', 'angry', 'excited'];
         if (this.state.trackInfo === undefined) {
             return <div> no work </div>
         }
-        if (!this.state.moodArrayReady) {
+        if (!this.state.moodArrayReady || this.state.mood.trim() =="") {
             return (
 
                 <div>
+                    <Combobox
+                        data={moods}
+                        value={this.state.mood}
+                        onChange={mood => this.setState({ mood })}
+                        width='100px'
+                    />
                     <button text="Press" onClick={this.findMood}></button>
                     
                 </div>
             );
         }
+        
         else {
             return (
-
                 <div>
                     <p>Song moods found</p>
                     <CreatePlaylist token={this.props.token} mood={this.state.mood} songList={this.state.moodArray} user={this.props.user} /> 

@@ -23,7 +23,8 @@ class Login extends Component{
                     redirectUri={redirectUri}
                     onSuccess={onSuccess}
                     onFailure={onFailure}
-                    scope="user-read-private, user-library-read, playlist-read-private, playlist-modify-public, playlist-modify-private, user-library-modify"
+                    scope="user-read-private, user-library-read, playlist-read-private, playlist-modify-public, playlist-modify-private, user-library-modify,streaming
+                    ,user-read-playback-state,user-modify-playback-state"
                 />
         );
     }

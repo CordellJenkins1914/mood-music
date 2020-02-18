@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import createPlaylist from '../Utils/createPlaylist';
 import addTracksToPlaylist from '../Utils/addTracksToPlaylist';
+import SpotifyPlayer from 'react-spotify-player';
 
 class CreatePlaylist extends Component {
     constructor(props) {
@@ -22,8 +23,6 @@ class CreatePlaylist extends Component {
 
 
     render() {
-
-        // size may also be a plain string using the presets 'large' or 'compact'
         const size = {
             width: '100%',
             height: 300,
@@ -32,10 +31,15 @@ class CreatePlaylist extends Component {
         const theme = 'black'; // or 'white'
         
         return (
-
+            
             <div>
                 <p>Playlist Created and tracks added</p>
-                
+                <SpotifyPlayer
+                    uri={this.state.playlistURI}
+                    size={size}
+                    view={view}
+                    theme={theme}
+                />
             </div>
         );
     }
